@@ -1,21 +1,21 @@
 
-IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'DbAcademicEvaluation')
-BEGIN
-    CREATE DATABASE DbAcademicEvaluation;
-END
-GO
+--IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'DbAcademicEvaluation')
+--BEGIN
+--    CREATE DATABASE DbAcademicEvaluation;
+--END
+--GO
 
-USE DbAcademicEvaluation;
-GO
+--USE DbAcademicEvaluation;
+--GO
 
-CREATE LOGIN UserAcademicEvaluation WITH PASSWORD = 'LOSFABULOSOSCADILLAC11',
-CHECK_POLICY = OFF,
-CHECK_EXPIRATION = OFF;
-GO
+--CREATE LOGIN UserAcademicEvaluation WITH PASSWORD = 'LOSFABULOSOSCADILLAC11',
+--CHECK_POLICY = OFF,
+--CHECK_EXPIRATION = OFF;
+--GO
 
-CREATE USER UserAcademicEvaluation FOR LOGIN UserAcademicEvaluation;
-EXEC sp_addrolemember N'db_owner', N'UserAcademicEvaluation';
-GO
+--CREATE USER UserAcademicEvaluation FOR LOGIN UserAcademicEvaluation;
+--EXEC sp_addrolemember N'db_owner', N'UserAcademicEvaluation';
+--GO
 
 ------------ SCHEMA -------------------
 CREATE SCHEMA academy;
@@ -34,6 +34,8 @@ CREATE TABLE academy.tblCareers (
     careerName NVARCHAR(MAX) NOT NULL,
     description NVARCHAR(MAX),
     facultyName NVARCHAR(MAX),
+	totalPeriods INTEGER NOT NULL,
+	yearLength INTEGER NOT NULL,
     isActive BIT DEFAULT 1,
     --createdAt DATETIME DEFAULT GETDATE(),
     --updatedAt DATETIME DEFAULT GETDATE(),
@@ -41,35 +43,35 @@ CREATE TABLE academy.tblCareers (
 		UNIQUE(careerCode)
 );
 
-CREATE TABLE academy.tblOfficialPlans (
-    idPlan INTEGER PRIMARY KEY IDENTITY,
-    idCareer INTEGER NOT NULL,
-    planVersion NVARCHAR(50) NOT NULL,
-    totalPeriods INT NOT NULL,
-    startDate DATE NOT NULL,
-    endDate DATE,
-    isActive BIT DEFAULT 1,
-    --createdAt DATETIME DEFAULT GETDATE(),
-    --updatedAt DATETIME DEFAULT GETDATE(),
-    CONSTRAINT fkPlan_Career
-		FOREIGN KEY (idCareer) REFERENCES academy.tblCareers(idCareer),
-	CONSTRAINT ukPlan_PlanVersion
-		UNIQUE (planVersion)
-);
+--CREATE TABLE academy.tblOfficialPlans (
+--    idPlan INTEGER PRIMARY KEY IDENTITY,
+--    idCareer INTEGER NOT NULL,
+--    planVersion NVARCHAR(50) NOT NULL,
+--    totalPeriods INT NOT NULL,
+--    startDate DATE NOT NULL,
+--    endDate DATE,
+--    isActive BIT DEFAULT 1,
+--    --createdAt DATETIME DEFAULT GETDATE(),
+--    --updatedAt DATETIME DEFAULT GETDATE(),
+--    CONSTRAINT fkPlan_Career
+--		FOREIGN KEY (idCareer) REFERENCES academy.tblCareers(idCareer),
+--	CONSTRAINT ukPlan_PlanVersion
+--		UNIQUE (planVersion)
+--);
 
 CREATE TABLE academy.tblSubjects (
     idSubject INTEGER PRIMARY KEY IDENTITY,
-    idPlan INTEGER NOT NULL,
+    idCareer INTEGER NOT NULL,
     subjectCode NVARCHAR(20) NOT NULL,
-    subjectName NVARCHAR(255) NOT NULL,
+    subjectName NVARCHAR(MAX) NOT NULL,
     idealPeriod INTEGER NOT NULL,
     credits INTEGER,
     hours INTEGER,
     subjectType NVARCHAR(50),		-----VERIFICAR QUE TIPOS EXISTIRIAN
     description NVARCHAR(MAX),
     isElective BIT DEFAULT 0,		----- PARA CLASES ELECTIVAS GENERALES
-	CONSTRAINT fkSubject_Plan
-		FOREIGN KEY (idPlan) REFERENCES academy.tblOfficialPlans(idPlan),
+	CONSTRAINT fkSubject_Career
+		FOREIGN KEY (idCareer) REFERENCES academy.tblCareers(idCareer),
 	CONSTRAINT ukSubject_SubjectCode
 		UNIQUE (subjectCode)
 );
@@ -101,6 +103,7 @@ CREATE TABLE users.tblRoles(
 CREATE TABLE users.tblUsers (
     idUser INTEGER PRIMARY KEY IDENTITY,
     email VARCHAR(255) NOT NULL,
+	password NVARCHAR(MAX) NOT NULL,
     name NVARCHAR(MAX) NOT NULL,
     idRole INTEGER NOT NULL,
     isActive BIT DEFAULT 1,
@@ -142,17 +145,17 @@ CREATE TABLE users.tblEmployees (
 		UNIQUE(idUser)
 );
 
-CREATE TABLE users.tblStudentPlans(
-	idStudentPlan INTEGER PRIMARY KEY IDENTITY,
+CREATE TABLE users.tblStudentCareers(
+	idStudentCareer INTEGER PRIMARY KEY IDENTITY,
 	idStudent INTEGER NOT NULL,
-	idPlan INTEGER NOT NULL,
+	idCareer INTEGER NOT NULL,
 	isActive BIT DEFAULT 1,
 	CONSTRAINT fkStudentCareers_Student
 		FOREIGN KEY (idStudent) REFERENCES users.tblStudents(idStudent),
-	CONSTRAINT fkStudentCareers_OfficialPlan
-		FOREIGN KEY (idPlan) REFERENCES academy.tblOfficialPlans(idPlan),
-	CONSTRAINT ukStudent_Plan
-		UNIQUE(idStudent,idPlan)
+	CONSTRAINT fkStudentCareers_Career
+		FOREIGN KEY (idCareer) REFERENCES academy.tblCareers(idCareer),
+	CONSTRAINT ukStudent_Career
+		UNIQUE(idStudent,idCareer)
 );
 
 ---------------------------- REQUESTS ----------------------------------
@@ -172,17 +175,20 @@ CREATE TABLE request.tblDiscrepancyTypes(
 
 CREATE TABLE request.tblRequests (
     idRequest INTEGER IDENTITY PRIMARY KEY,
-    idStudentPlan INTEGER NOT NULL,
+    idStudentCareer INTEGER NOT NULL,
+	idRequestStatus INTEGER NOT NULL,
     submittedAt DATETIME DEFAULT GETDATE(),
     reviewedAt DATETIME,
     idEmployeeReviewer INTEGER,
     finalScore DECIMAL(5,2),
     generatedReportUrl NVARCHAR(MAX),
     notes NVARCHAR(MAX),
-	CONSTRAINT fkRequest_StudentPlan
-		FOREIGN KEY (idStudentPlan) REFERENCES users.tblStudentPlans(idStudentPlan),
+	CONSTRAINT fkRequest_StudentCareer
+		FOREIGN KEY (idStudentCareer) REFERENCES users.tblStudentCareers(idStudentCareer),
 	CONSTRAINT fkRequest_EmployeeReviewer
-		FOREIGN KEY (idEmployeeReviewer) REFERENCES users.tblEmployees(idEmployee)
+		FOREIGN KEY (idEmployeeReviewer) REFERENCES users.tblEmployees(idEmployee),
+	CONSTRAINT fkRequest_Status
+		FOREIGN KEY (idRequestStatus) REFERENCES request.tblRequestStatus(idRequestStatus),
 );
 
 CREATE TABLE request.tblDiscrepancies (
