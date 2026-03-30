@@ -1,0 +1,262 @@
+
+IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'DbAcademicEvaluation')
+BEGIN
+    CREATE DATABASE DbAcademicEvaluation;
+END
+GO
+
+USE DbAcademicEvaluation;
+GO
+
+CREATE LOGIN UserAcademicEvaluation WITH PASSWORD = 'LOSFABULOSOSCADILLAC11',
+CHECK_POLICY = OFF,
+CHECK_EXPIRATION = OFF;
+GO
+
+CREATE USER UserAcademicEvaluation FOR LOGIN UserAcademicEvaluation;
+EXEC sp_addrolemember N'db_owner', N'UserAcademicEvaluation';
+GO
+
+------------ SCHEMA -------------------
+CREATE SCHEMA academy;
+GO
+
+CREATE SCHEMA users;
+GO
+
+CREATE SCHEMA request;
+GO
+
+------------- ACADEMY ---------------------
+CREATE TABLE academy.tblCareers (
+    idCareer INTEGER PRIMARY KEY IDENTITY,
+    careerCode NVARCHAR(20) NOT NULL,
+    careerName NVARCHAR(MAX) NOT NULL,
+    description NVARCHAR(MAX),
+    facultyName NVARCHAR(MAX),
+    isActive BIT DEFAULT 1,
+    --createdAt DATETIME DEFAULT GETDATE(),
+    --updatedAt DATETIME DEFAULT GETDATE(),
+	CONSTRAINT ukCareer_CareerCode
+		UNIQUE(careerCode)
+);
+
+CREATE TABLE academy.tblOfficialPlans (
+    idPlan INTEGER PRIMARY KEY IDENTITY,
+    idCareer INTEGER NOT NULL,
+    planVersion NVARCHAR(50) NOT NULL,
+    totalPeriods INT NOT NULL,
+    startDate DATE NOT NULL,
+    endDate DATE,
+    isActive BIT DEFAULT 1,
+    --createdAt DATETIME DEFAULT GETDATE(),
+    --updatedAt DATETIME DEFAULT GETDATE(),
+    CONSTRAINT fkPlan_Career
+		FOREIGN KEY (idCareer) REFERENCES academy.tblCareers(idCareer),
+	CONSTRAINT ukPlan_PlanVersion
+		UNIQUE (planVersion)
+);
+
+CREATE TABLE academy.tblSubjects (
+    idSubject INTEGER PRIMARY KEY IDENTITY,
+    idPlan INTEGER NOT NULL,
+    subjectCode NVARCHAR(20) NOT NULL,
+    subjectName NVARCHAR(255) NOT NULL,
+    idealPeriod INTEGER NOT NULL,
+    credits INTEGER,
+    hours INTEGER,
+    subjectType NVARCHAR(50),		-----VERIFICAR QUE TIPOS EXISTIRIAN
+    description NVARCHAR(MAX),
+    isElective BIT DEFAULT 0,		----- PARA CLASES ELECTIVAS GENERALES
+	CONSTRAINT fkSubject_Plan
+		FOREIGN KEY (idPlan) REFERENCES academy.tblOfficialPlans(idPlan),
+	CONSTRAINT ukSubject_SubjectCode
+		UNIQUE (subjectCode)
+);
+
+
+CREATE TABLE academy.tblSubjectPrerequisites (
+    idPrerequisite INTEGER IDENTITY PRIMARY KEY,
+    idSubject INTEGER NOT NULL,
+    idPrerequisiteSubject INTEGER NOT NULL,
+    isStrict BIT DEFAULT 1,
+	CONSTRAINT fkPrerequisite_Subject
+		FOREIGN KEY (idSubject) REFERENCES academy.tblSubjects(idSubject),
+	CONSTRAINT fkPrerequisite_PrerequisiteSubject
+		FOREIGN KEY (idPrerequisiteSubject) REFERENCES academy.tblSubjects(idSubject),
+	CONSTRAINT ukPrerequsite_Subject
+		UNIQUE (idSubject,idPrerequisiteSubject)
+);
+
+
+----------------- USERS --------------------
+CREATE TABLE users.tblRoles(
+	idRole INTEGER PRIMARY KEY IDENTITY,
+	roleName NVARCHAR(200) NOT NULL,
+	isPublic BIT DEFAULT 1
+	CONSTRAINT ukRole_RoleName
+		UNIQUE(roleName)
+);
+
+CREATE TABLE users.tblUsers (
+    idUser INTEGER PRIMARY KEY IDENTITY,
+    email VARCHAR(255) NOT NULL,
+    name NVARCHAR(MAX) NOT NULL,
+    idRole INTEGER NOT NULL,
+    isActive BIT DEFAULT 1,
+    --createdAt DATETIME DEFAULT GETDATE(),
+    --updatedAt DATETIME DEFAULT GETDATE(),
+    lastLoginAt DATETIME
+	CONSTRAINT fkUser_Role
+		FOREIGN KEY (idRole) REFERENCES users.tblRoles(idRole),
+	CONSTRAINT ukUser_Email
+		UNIQUE (email)
+);
+
+CREATE TABLE users.tblStudents (
+    idStudent INTEGER PRIMARY KEY IDENTITY,
+	idUser INTEGER NOT NULL,
+    accountNumber NVARCHAR(50) NOT NULL,
+    enrollmentDate DATE,
+    currentPeriod INTEGER,
+	CONSTRAINT fkStudent_User
+		FOREIGN KEY (idUser) REFERENCES users.tblUsers(idUser),
+	CONSTRAINT ukStudent_AccountNumber
+		UNIQUE (accountNumber),
+	CONSTRAINT ukStudent_User
+		UNIQUE(idUser)
+);
+
+CREATE TABLE users.tblEmployees (
+    idEmployee INTEGER PRIMARY KEY IDENTITY,
+	idUser INTEGER NOT NULL,
+    employeeCode NVARCHAR(50) NOT NULL,
+    department NVARCHAR(MAX),
+    position VARCHAR(MAX),
+    hireDate DATE,
+	CONSTRAINT fkEmployee_User
+		FOREIGN KEY (idUser) REFERENCES users.tblUsers(idUser),
+	CONSTRAINT ukEmployee_EmployeeCode
+		UNIQUE(employeeCode),
+	CONSTRAINT ukEmployee_User
+		UNIQUE(idUser)
+);
+
+CREATE TABLE users.tblStudentPlans(
+	idStudentPlan INTEGER PRIMARY KEY IDENTITY,
+	idStudent INTEGER NOT NULL,
+	idPlan INTEGER NOT NULL,
+	isActive BIT DEFAULT 1,
+	CONSTRAINT fkStudentCareers_Student
+		FOREIGN KEY (idStudent) REFERENCES users.tblStudents(idStudent),
+	CONSTRAINT fkStudentCareers_OfficialPlan
+		FOREIGN KEY (idPlan) REFERENCES academy.tblOfficialPlans(idPlan),
+	CONSTRAINT ukStudent_Plan
+		UNIQUE(idStudent,idPlan)
+);
+
+---------------------------- REQUESTS ----------------------------------
+CREATE TABLE request.tblRequestStatus(
+	idRequestStatus INTEGER PRIMARY KEY IDENTITY,
+	statusName NVARCHAR(50) NOT NULL,
+	CONSTRAINT ukStatus_StatusName
+		UNIQUE (statusName)
+);
+
+CREATE TABLE request.tblDiscrepancyTypes(
+	idDiscrepancyType INTEGER PRIMARY KEY IDENTITY,
+	typeName NVARCHAR(50) NOT NULL,
+	CONSTRAINT ukDiscrepancyType_TypeName
+		UNIQUE (typeName)
+);
+
+CREATE TABLE request.tblRequests (
+    idRequest INTEGER IDENTITY PRIMARY KEY,
+    idStudentPlan INTEGER NOT NULL,
+    submittedAt DATETIME DEFAULT GETDATE(),
+    reviewedAt DATETIME,
+    idEmployeeReviewer INTEGER,
+    finalScore DECIMAL(5,2),
+    generatedReportUrl NVARCHAR(MAX),
+    notes NVARCHAR(MAX),
+	CONSTRAINT fkRequest_StudentPlan
+		FOREIGN KEY (idStudentPlan) REFERENCES users.tblStudentPlans(idStudentPlan),
+	CONSTRAINT fkRequest_EmployeeReviewer
+		FOREIGN KEY (idEmployeeReviewer) REFERENCES users.tblEmployees(idEmployee)
+);
+
+CREATE TABLE request.tblDiscrepancies (
+    idDiscrepancy INTEGER PRIMARY KEY IDENTITY,
+    idRequest INTEGER NOT NULL,
+    idSubject INTEGER NOT NULL,
+	idDiscrepancyType INTEGER NOT NULL,
+    expectedPeriod INTEGER,
+    actualPeriod INTEGER,
+    description NVARCHAR(MAX),
+    periodDifference AS (actualPeriod - expectedPeriod) PERSISTED,
+    severity NVARCHAR(MAX),
+    detectedAt DATETIME DEFAULT GETDATE(),
+	CONSTRAINT fkDiscrepancy_Request
+		FOREIGN KEY (idRequest) REFERENCES request.tblRequests(idRequest),
+	CONSTRAINT fkDiscrepancy_Subject
+		FOREIGN KEY (idSubject) REFERENCES academy.tblSubjects(idSubject),
+	CONSTRAINT fkDiscrepancy_DiscrepancyType
+		FOREIGN KEY (idDiscrepancyType) REFERENCES request.tblDiscrepancyTypes(idDiscrepancyType)
+);
+
+
+CREATE TABLE request.tblJustifications (
+    idJustification INTEGER IDENTITY PRIMARY KEY,
+    idDiscrepancy INTEGER NOT NULL,
+    title NVARCHAR(MAX),
+    description NVARCHAR(MAX),
+    impactLevel NVARCHAR(MAX),
+    employeeComments NVARCHAR(MAX),
+    submittedAt DATETIME DEFAULT GETDATE(),
+    reviewedAt DATETIME,
+    CONSTRAINT fkJustification_Discrepancy
+		FOREIGN KEY (idDiscrepancy) REFERENCES request.tblDiscrepancies(idDiscrepancy)
+);
+
+CREATE TABLE request.tblScoreCalculations (
+    idScoreCalculation INTEGER IDENTITY PRIMARY KEY,
+    idRequest INTEGER NOT NULL,
+    baseScore DECIMAL(5,2) DEFAULT 100,
+    totalDelay INTEGER DEFAULT 0,
+    delayPenalty DECIMAL(5,2) DEFAULT 0,
+    impactAdjustment DECIMAL(5,2) DEFAULT 0,
+    finalScore DECIMAL(5,2),
+    discrepanciesCount INTEGER DEFAULT 0,
+    calculatedAt DATETIME DEFAULT GETDATE(),
+    CONSTRAINT fkScoreCalculation_Request
+		FOREIGN KEY (idRequest) REFERENCES request.tblRequests(idRequest),
+	CONSTRAINT ukScoreCalculation_Request
+		UNIQUE (idRequest)
+);
+
+CREATE TABLE request.tblScoringParameters (
+    idScoringParameter INTEGER IDENTITY PRIMARY KEY,
+    parameterName NVARCHAR(100) NOT NULL,
+    parameterValue DECIMAL(10,2),
+    description NVARCHAR(MAX),
+    isActive BIT DEFAULT 1,
+    --createdAt DATETIME DEFAULT GETDATE(),
+    --updatedAt DATETIME DEFAULT GETDATE(),
+    CONSTRAINT uk_ScoringParameter_ParameterName
+		UNIQUE (parameterName)
+);
+
+--CREATE TABLE request.tblRequestStatusHistory (
+--    idRequestStatusHistory INTEGER IDENTITY PRIMARY KEY,
+--    idRequest INTEGER NOT NULL,
+--    previousStatus NVARCHAR(50),
+--    newStatus NVARCHAR(50),
+--    changedBy NVARCHAR(50),
+--    changedAt DATETIME2 DEFAULT GETDATE(),
+--    notes NVARCHAR(MAX),
+--    CONSTRAINT fk_RequestStatusHistory_request
+--		FOREIGN KEY (idRequest) REFERENCES request.tblRequests(idRequest)
+--);
+
+
+
