@@ -39,7 +39,7 @@ CREATE TABLE academy.tblCareers (
     facultyName NVARCHAR(MAX),
 	totalPeriods INTEGER NOT NULL,
 	yearLength INTEGER NOT NULL,
-    isActive BIT DEFAULT 1,
+    isActive BIT DEFAULT 1,	
     --createdAt DATETIME DEFAULT GETDATE(),
     --updatedAt DATETIME DEFAULT GETDATE(),
 	CONSTRAINT ukCareer_CareerCode
@@ -64,7 +64,6 @@ CREATE TABLE academy.tblCareers (
 
 CREATE TABLE academy.tblSubjects (
     idSubject INTEGER PRIMARY KEY IDENTITY,
-    idCareer INTEGER NOT NULL,
     subjectCode NVARCHAR(20) NOT NULL,
     subjectName NVARCHAR(MAX) NOT NULL,
     idealPeriod INTEGER NOT NULL,
@@ -72,11 +71,22 @@ CREATE TABLE academy.tblSubjects (
     hours INTEGER,
     subjectType NVARCHAR(50),		-----VERIFICAR QUE TIPOS EXISTIRIAN
     description NVARCHAR(MAX),
-    isElective BIT DEFAULT 0,		----- PARA CLASES ELECTIVAS GENERALES
-	CONSTRAINT fkSubject_Career
-		FOREIGN KEY (idCareer) REFERENCES academy.tblCareers(idCareer),
+    isOptative BIT DEFAULT 0,		----- PARA CLASES OPTATIVAS DE UNA CARRERA (SISTEMAS EXPERTOS EJ)
 	CONSTRAINT ukSubject_SubjectCode
 		UNIQUE (subjectCode)
+);
+
+CREATE TABLE academy.tblCareerSubjects(
+	idCareerSubject INTEGER PRIMARY KEY IDENTITY,
+	idCareer INTEGER NOT NULL,
+	idSubject INTEGER NOT NULL,
+	isElective BIT DEFAULT 0,
+	CONSTRAINT fkCareerSubject_Career
+		FOREIGN KEY (idCareer) REFERENCES academy.tblCareers(idCareer),
+	CONSTRAINT fkCareerSubject
+		FOREIGN KEY (idSubject) REFERENCES academy.tblSubjects(idSubject),
+	CONSTRAINT ukCareer_Subject
+		UNIQUE(idCareer,idSubject)
 );
 
 
@@ -206,12 +216,6 @@ CREATE TABLE asset.tblEmailVerifications (
 );
 
 ---------------------------- REQUESTS ----------------------------------
-CREATE TABLE request.tblRequestStatus(
-	idRequestStatus INTEGER PRIMARY KEY IDENTITY,
-	statusName NVARCHAR(50) NOT NULL,
-	CONSTRAINT ukStatus_StatusName
-		UNIQUE (statusName)
-);
 
 CREATE TABLE request.tblDiscrepancyTypes(
 	idDiscrepancyType INTEGER PRIMARY KEY IDENTITY,
@@ -223,7 +227,7 @@ CREATE TABLE request.tblDiscrepancyTypes(
 CREATE TABLE request.tblRequests (
     idRequest INTEGER IDENTITY PRIMARY KEY,
     idStudentCareer INTEGER NOT NULL,
-	idRequestStatus INTEGER NOT NULL,
+	idStatus INTEGER NOT NULL,
     submittedAt DATETIME DEFAULT GETDATE(),
     reviewedAt DATETIME,
     idEmployeeReviewer INTEGER,
@@ -235,7 +239,7 @@ CREATE TABLE request.tblRequests (
 	CONSTRAINT fkRequest_EmployeeReviewer
 		FOREIGN KEY (idEmployeeReviewer) REFERENCES users.tblEmployees(idEmployee),
 	CONSTRAINT fkRequest_Status
-		FOREIGN KEY (idRequestStatus) REFERENCES request.tblRequestStatus(idRequestStatus),
+		FOREIGN KEY (idStatus) REFERENCES asset.tblStatus(idStatus)
 );
 
 CREATE TABLE request.tblDiscrepancies (

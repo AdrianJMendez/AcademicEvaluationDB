@@ -3,11 +3,13 @@ GO
 
 ------	INSERTS INICIALES ---------------------
 INSERT INTO asset.tblStatusTypes(statusTypeName, description)
-VALUES	('EMAIL_VERIFICATION','Estados por los que pasa un correo de verificación de usuario.')
+VALUES	('EMAIL_VERIFICATION','Estados por los que pasa un correo de verificación de usuario.'),
+		('REQUEST','Estados que puede tener una solicitud de evaluación académica.')
 GO
 
 INSERT INTO asset.tblStatus(statusName, idStatusType)
-VALUES	('VERIFIED',1),('EXPIRED',1),('PENDING',1)
+VALUES	('VERIFIED',1),('EXPIRED',1),('PENDING',1),
+		('pending',2),('in-review',2),('reviewed',2)
 GO
 
 INSERT INTO users.tblRoles(roleName,isPublic)
@@ -17,10 +19,6 @@ GO
 INSERT INTO academy.tblCareers(careerCode,careerName,facultyName,totalPeriods,yearLength)
 VALUES	('IS','Ingenieria en Sistemas','Ingenieria',15,5),
 		('AGE','Administracion de Empresas','Ciencias Economicas',20,6);
-GO
-
-INSERT INTO request.tblRequestStatus(statusName)
-VALUES ('pending'),('in-review'),('reviewed');
 GO
 
 INSERT INTO request.tblDiscrepancyTypes(typeName)
@@ -37,17 +35,21 @@ VALUES
 ('high_impact_adjustment',5);
 GO
 
-INSERT INTO academy.tblSubjects(idCareer,subjectCode,subjectName,idealPeriod,credits,hours,subjectType)
-VALUES	(1,'MM-110','Matematicas',1,5,5,'?'),
-		(1,'IS-110','Introduccion a ingenieria en sistemas',1,3,3,'?'),
-		(1,'MM-314','Programación I ',2,3,3,'?'),
-		(1,'IS-210','Programación II ',1,4,4,'?');
+INSERT INTO academy.tblSubjects(subjectCode,subjectName,idealPeriod,credits,hours,subjectType)
+VALUES	('MM110','Matematicas',1,5,5,'?'),
+		('IS110','Introduccion a ingenieria en sistemas',1,3,3,'?'),
+		('MM314','Programación I ',2,3,3,'?'),
+		('IS210','Programación II ',1,4,4,'?');
+GO
+
+INSERT INTO academy.tblCareerSubjects(idCareer, idSubject)
+SELECT 1, idSubject FROM academy.tblSubjects
 GO
 
 INSERT INTO academy.tblSubjectPrerequisites(idSubject,idPrerequisiteSubject)
-VALUES	( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM-314')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM-110') ),
-		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM-314')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS-110') ),
-		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS-210')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM-314') )
+VALUES	( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM314')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM110') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM314')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS110') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS210')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM314') )
 GO
 
 
