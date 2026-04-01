@@ -27,6 +27,9 @@ GO
 CREATE SCHEMA request;
 GO
 
+CREATE SCHEMA asset;
+GO
+
 ------------- ACADEMY ---------------------
 CREATE TABLE academy.tblCareers (
     idCareer INTEGER PRIMARY KEY IDENTITY,
@@ -107,6 +110,7 @@ CREATE TABLE users.tblUsers (
     name NVARCHAR(MAX) NOT NULL,
     idRole INTEGER NOT NULL,
     isActive BIT DEFAULT 1,
+	isVerified BIT DEFAULT 0,
     --createdAt DATETIME DEFAULT GETDATE(),
     --updatedAt DATETIME DEFAULT GETDATE(),
     lastLoginAt DATETIME
@@ -156,6 +160,49 @@ CREATE TABLE users.tblStudentCareers(
 		FOREIGN KEY (idCareer) REFERENCES academy.tblCareers(idCareer),
 	CONSTRAINT ukStudent_Career
 		UNIQUE(idStudent,idCareer)
+);
+
+
+---------------------------- ASSET ------------------------------------
+CREATE TABLE asset.tblStatusTypes(
+	idStatusType INTEGER PRIMARY KEY IDENTITY,
+	statusTypeName NVARCHAR(MAX) NOT NULL,
+	description NVARCHAR(MAX) NOT NULL
+);
+
+CREATE TABLE asset.tblStatus(
+	idStatus INTEGER PRIMARY KEY IDENTITY,
+	statusName NVARCHAR(MAX) NOT NULL,
+	idStatusType INTEGER NOT NULL,
+	CONSTRAINT fkStatus_StatusType
+	FOREIGN KEY (idStatusType) REFERENCES asset.tblStatusTypes(idStatusType)
+);
+
+CREATE TABLE asset.tblEmailTemplates(
+	idEmailTemplate INTEGER PRIMARY KEY IDENTITY,
+	templateName NVARCHAR(200) NOT NULL,
+	content NVARCHAR(MAX) NOT NULL,
+	CONSTRAINT ukEmailTemplate_TemplateName
+		UNIQUE(templateName)
+);
+
+CREATE TABLE asset.tblEmailVerifications (
+    idEmailVerification INTEGER IDENTITY PRIMARY KEY,
+    idUser INTEGER NOT NULL,
+    code NVARCHAR(6) NOT NULL,
+    failedAttempts INTEGER DEFAULT 0,
+    createdAt DATETIME DEFAULT GETDATE(),
+    expiresAt DATETIME NOT NULL,
+    verifiedAt DATETIME NULL,
+    idStatus INTEGER NOT NULL DEFAULT 3,
+    originIP NVARCHAR(45) NULL,
+    userAgent NVARCHAR(500) NULL,
+    CONSTRAINT fkVerificationEmail_User 
+	FOREIGN KEY (idUser) REFERENCES users.tblUsers(idUser),
+	CONSTRAINT fkVerificationEmail_Status
+		FOREIGN KEY (idStatus) REFERENCES asset.tblStatus(idStatus),
+    CONSTRAINT ckEmailVerification_FailedAttempts 
+	CHECK ((failedAttempts >= 0 AND failedAttempts <= 5)),
 );
 
 ---------------------------- REQUESTS ----------------------------------
