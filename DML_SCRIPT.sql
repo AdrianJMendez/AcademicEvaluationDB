@@ -36,10 +36,94 @@ VALUES
 GO
 
 INSERT INTO academy.tblSubjects(subjectCode,subjectName,idealPeriod,credits,hours,subjectType)
-VALUES	('MM110','Matematicas',1,5,5,'?'),
-		('IS110','Introduccion a ingenieria en sistemas',1,3,3,'?'),
-		('MM314','Programación I ',2,3,3,'?'),
-		('IS210','Programación II ',1,4,4,'?');
+VALUES							
+								('IS110',	'Introducción. a la Ingeniería en Sistemas',	1,			3,		3,	'?'),
+								('MM110',	'Matematicas',	1,			5,		5,	'?'),
+								('MM111',	'Geometría y Trigonometría',	1,			5,		5,	'?'),
+								('SC101',	'Sociología',	1,			4,		4,	'?'),
+								--SEGUNDO PERIODO
+								('MM201',	'Calculo I',	2,			5,		5,	'?'),
+								('MM211',	'Vectores y Matrices',	2,			3,		3,	'?'),
+								('IN101',	'Ingles I',	2,			4,		4,	'?'),
+								--TERCER PERIODO
+								('MM314',	'Programación I',	3,			3,		3,	'?'),
+								('MM202',	'Calculo II',	3,			5,		5,	'?'),
+								('IN102',	'Ingles II',	3,			4,		4,	'?'),
+								('EG011',	'Español General I',	3,			4,		4,	'?'),
+								--CUARTO PERIODO
+								('FS100',	'Física I',	4,		5,		5,	'?'),
+								('MM411',	'Ecuaciones Diferenciales',	4,			3,		3,	'?'),
+								('IS210',	'Programación II',	4,			4,		4,	'?'),
+								('FF101',	'Filosofia',	4,			4,		4,	'?'),
+								--QUINTO PERIODO
+								('IN103',	'Ingles III',	5,			4,		4,	'?'),
+								('DQ101',	'Dibujo I ',	5,			2,		2,	'?'),
+								('FS200',	'Fisica II',	5,			5,		5,	'?'),
+								('IS311',	'Circuitos Eléctricos',	5,			3,		3,	'?'),
+								--SEXTO PERIODO
+								('MM420',	'Matematica Discretas',	6,			4,		4,	'?'),
+								('DQ102',	'Dibujo II ',	6,			2,		2,	'?'),
+								('MM401',	'Estadística',	6,			3,		3,	'?'),
+								('IS310',	'Algoritmos y Estructura De Datos',	6,			4,		4,	'?'),
+								--SEPTIMO PERIODO
+								('IS410',	'Programación Orientada a Objetos',	7,			5,		5,	'?'),
+								('IS411',	'Electronica para Ing. en Sistemas',	7,			3,		3,	'?'),
+								('IS412',	'Sistemas Operativos I ',	7,			5,		5,	'?'),
+								--OCTAVO PERIODO
+								('IS501',	'Base de Datos I',	8,			5,		5,	'?'),
+								('HH101',	'Historia de Honduras',	8,			4,		4,	'?'),
+								('IS510',	'Instalaciones Electricas',	8,			3,		3,	'?'),
+								('IS511',	'Redes de Datos I',	8,			4,		4,	'?'),
+								--NOVENO PERIODO
+								('IS512',	'Sistemas Operativos II',	9,			4,		4,	'?'),
+								('IS601',	'Base de Datos II',	9,			4,		4,	'?'),
+								('IS603 ',	'Arquitectura de Computadoras',	9,			4,		4,	'?'),
+								('IS513',	'Lenguajes de Programacion',	9,			4,		4,	'?'),
+								--DECIMO PERIODO
+								('IS611',	'Redes de Datos II',	10,			4,		4,	'?'),
+								('IS711',	'Diseño Digital',	10,			4,		4,	'?'),
+								('IS602',	'Sistemas de Información',	10,			4,		4,	'?'),
+								--ONCEAVO PERIODO
+								('IS811',	'Seguridad Informática',	11	,		4,		4,	'?'),
+								('IS720',	'Administración I',	11,			4,		4,	'?'),
+								('IS702',	'Análisis y Diseño',	11,			4,		4,	'?'),
+								--DOCEAVO PERIODO
+								('IS721',	'Contabilidad I',	12	,		4,		4,	'?'),
+								('IS903',	'Auditoria Informática',	12	,		3,		3,	'?'),
+								('IS701',	'Inteligencia Artificial',	12,			4,		4,	'?'),
+								('IS802',	'Ingeniería en Software',	12	,		4,		4,	'?'),
+								--TRECEAVO PERIODO
+								('IS820',	'Finanzas Administrativas',	13	,		4,		4,	'?'),
+								('IS902',	'Industria del Software',	13	,		4,		4,	'?'),
+								('IS904',	'Gerencia Informática',	13	,		4,		4,	'?'),
+								--CATORCEAVO PERIODO			POCAS CLASES PARA METER ACA LAS OPTATIVAS DE LA CARRERA
+								('IS905',	'Economía Digital',	14	,		5,		5,	'?'),
+								('IS906',	'Topicos Especiales y Avanzados',	14	,		3,		3,	'?'),
+								--QUINCEAVO PERIODO
+								('IS115',	'Seminario de Investigación',	15	,		4,		4,	'?'),
+								-----CLASES ELECTIVAS GENERALES
+								--AREA DE DEPORTE  // ARTE
+								('RR189',	'Ajedrez',	1	,		3,		3,	'?'),
+								('RR172',	'Baloncesto',	1	,		3,		3,	'?'),
+								('RR171',	'Futbol',	1	,		3,		3,	'?'),
+								('RR181',	'Primeros Auxilios',	1	,		3,		3,	'?'),
+								--AREA DE HUMANIDADES
+								('EO021',	'Tecnicas de Lectura',	1	,		3,		3,	'?'),
+								('EO025',	'Redaccion General',	1	,		3,		3,	'?'),
+								('EO026',	'Literatura Hondureña',	1	,		3,		3,	'?'),
+								--AREA DE CIENCIAS NATURALES
+								('BI130',	'Educacion Ambiental',	1	,		3,		3,	'?'),
+								('AN111',	'Introduccion a la Astronomia',	1	,		3,		3,	'?')
+
+GO
+
+INSERT INTO academy.tblSubjects(subjectCode,subjectName,idealPeriod,credits,hours,subjectType,isOptative)
+VALUES							--CLASES OPTATIVAS DE SISTEMAS
+								('IS910',	'Teoría de la Simulación',	14	,		3,		3,	'?',1),
+								('IS911',	'Microprocesadores',	14	,		3,		3,	'?',1),
+								('IS914',	'Liderazgo para el cambio',	14	,		3,		3,	'?',1),
+								('IS912',	'Sistemas Expertos',	14	,		3,		3,	'?',1),
+								('IS913',	'Diseño de Compiladores',	14	,		3,		3,	'?',1);
 GO
 
 INSERT INTO academy.tblCareerSubjects(idCareer, idSubject)
@@ -47,9 +131,62 @@ SELECT 1, idSubject FROM academy.tblSubjects
 GO
 
 INSERT INTO academy.tblSubjectPrerequisites(idSubject,idPrerequisiteSubject)
-VALUES	( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM314')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM110') ),
+VALUES	( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM211')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM110') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM201')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM110') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM201')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM111') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM202')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM201') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IN102')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IN101') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM314')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM110') ),
 		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM314')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS110') ),
-		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS210')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM314') )
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'FS100')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM201') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'FS100')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM211') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM411')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM202') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS210')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM314') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IN103')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IN102') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'DQ101')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM211') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'FS200')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'FS100') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS311')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM411') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS311')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'FS100') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM420')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM314') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM420')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'FF101') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'DQ102')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'DQ101') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM401')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM202') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS310')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS210') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS410')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS310') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS411')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS311') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS412')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS310') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS412')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM420') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS501')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM401') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS501')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS410') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS510')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS311') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS511')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS411') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS512')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS412') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS601')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS501') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS603')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS511') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS513')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS410') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS611')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS511') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS711')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS603') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS602')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS513') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS811')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS711') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS811')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS512') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS720')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM420') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS702')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS602') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS721')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS720') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS903')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS811') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS701')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS601') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS701')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS602') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS802')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS702') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS820')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS721') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS902')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS802') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS904')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS811') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS906')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS904') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS905')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS820') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS115')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS905') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS910')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS904') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS911')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS603') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS914')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS820') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS912')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS701') ),
+		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS913')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS603') )
 GO
 
 
