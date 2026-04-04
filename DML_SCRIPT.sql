@@ -22,7 +22,7 @@ VALUES	('IS','Ingenieria en Sistemas','Ingenieria',15,5),
 GO
 
 INSERT INTO request.tblDiscrepancyTypes(typeName)
-VALUES	('sickness'),('death'),('unexpected_event'),('other');
+VALUES	('Retraso'),('Baja carga academica'),('Observacion'),('other');
 GO
 
 INSERT INTO request.tblScoringParameters (parameterName, parameterValue)
@@ -77,7 +77,7 @@ VALUES
 								--NOVENO PERIODO
 								('IS512',	'Sistemas Operativos II',	9,			4,		4,	'?'),
 								('IS601',	'Base de Datos II',	9,			4,		4,	'?'),
-								('IS603 ',	'Arquitectura de Computadoras',	9,			4,		4,	'?'),
+								('IS603',	'Arquitectura de Computadoras',	9,			4,		4,	'?'),
 								('IS513',	'Lenguajes de Programacion',	9,			4,		4,	'?'),
 								--DECIMO PERIODO
 								('IS611',	'Redes de Datos II',	10,			4,		4,	'?'),
@@ -103,17 +103,17 @@ VALUES
 								('IS115',	'Seminario de Investigación',	15	,		4,		4,	'?'),
 								-----CLASES ELECTIVAS GENERALES
 								--AREA DE DEPORTE  // ARTE
-								('RR189',	'Ajedrez',	1	,		3,		3,	'?'),
-								('RR172',	'Baloncesto',	1	,		3,		3,	'?'),
-								('RR171',	'Futbol',	1	,		3,		3,	'?'),
-								('RR181',	'Primeros Auxilios',	1	,		3,		3,	'?'),
+								('RR189',	'Ajedrez',	1	,		3,		3,	'elective'),
+								('RR172',	'Baloncesto',	1	,		3,		3,	'elective'),
+								('RR171',	'Futbol',	1	,		3,		3,	'elective'),
+								('RR181',	'Primeros Auxilios',	1	,		3,		3,	'elective'),
 								--AREA DE HUMANIDADES
-								('EO021',	'Tecnicas de Lectura',	1	,		3,		3,	'?'),
-								('EO025',	'Redaccion General',	1	,		3,		3,	'?'),
-								('EO026',	'Literatura Hondureña',	1	,		3,		3,	'?'),
+								('EO021',	'Tecnicas de Lectura',	1	,		3,		3,	'elective'),
+								('EO025',	'Redaccion General',	1	,		3,		3,	'elective'),
+								('EO026',	'Literatura Hondureña',	1	,		3,		3,	'elective'),
 								--AREA DE CIENCIAS NATURALES
-								('BI130',	'Educacion Ambiental',	1	,		3,		3,	'?'),
-								('AN111',	'Introduccion a la Astronomia',	1	,		3,		3,	'?')
+								('BI130',	'Educacion Ambiental',	1	,		3,		3,	'elective'),
+								('AN111',	'Introduccion a la Astronomia',	1	,		3,		3,	'elective')
 
 GO
 
@@ -128,6 +128,13 @@ GO
 
 INSERT INTO academy.tblCareerSubjects(idCareer, idSubject)
 SELECT 1, idSubject FROM academy.tblSubjects
+GO
+
+UPDATE cs
+SET isElective = 1
+FROM academy.tblCareerSubjects AS cs
+INNER JOIN academy.tblSubjects AS s ON cs.idSubject = s.idSubject
+WHERE s.subjectType = 'elective';
 GO
 
 INSERT INTO academy.tblSubjectPrerequisites(idSubject,idPrerequisiteSubject)
@@ -188,7 +195,6 @@ VALUES	( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'MM211')
 		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS912')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS701') ),
 		( (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS913')  ,   (SELECT idSubject FROM academy.tblSubjects WHERE subjectCode = 'IS603') )
 GO
-
 
 INSERT INTO asset.tblEmailTemplates(templateName,content)
 VALUES ('VERIFICATION','

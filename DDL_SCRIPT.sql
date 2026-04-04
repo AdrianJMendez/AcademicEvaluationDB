@@ -99,7 +99,7 @@ CREATE TABLE academy.tblSubjectPrerequisites (
 		FOREIGN KEY (idSubject) REFERENCES academy.tblSubjects(idSubject),
 	CONSTRAINT fkPrerequisite_PrerequisiteSubject
 		FOREIGN KEY (idPrerequisiteSubject) REFERENCES academy.tblSubjects(idSubject),
-	CONSTRAINT ukPrerequsite_Subject
+	CONSTRAINT ukPrerequisite_Subject
 		UNIQUE (idSubject,idPrerequisiteSubject)
 );
 
@@ -244,35 +244,41 @@ CREATE TABLE request.tblRequests (
 
 CREATE TABLE request.tblDiscrepancies (
     idDiscrepancy INTEGER PRIMARY KEY IDENTITY,
-    idRequest INTEGER NOT NULL,
-    idSubject INTEGER NOT NULL,
 	idDiscrepancyType INTEGER NOT NULL,
+	idRequest INTEGER NOT NULL,
     expectedPeriod INTEGER,
     actualPeriod INTEGER,
     description NVARCHAR(MAX),
     periodDifference AS (actualPeriod - expectedPeriod) PERSISTED,
     severity NVARCHAR(MAX),
     detectedAt DATETIME DEFAULT GETDATE(),
-	CONSTRAINT fkDiscrepancy_Request
-		FOREIGN KEY (idRequest) REFERENCES request.tblRequests(idRequest),
-	CONSTRAINT fkDiscrepancy_Subject
-		FOREIGN KEY (idSubject) REFERENCES academy.tblSubjects(idSubject),
 	CONSTRAINT fkDiscrepancy_DiscrepancyType
-		FOREIGN KEY (idDiscrepancyType) REFERENCES request.tblDiscrepancyTypes(idDiscrepancyType)
+		FOREIGN KEY (idDiscrepancyType) REFERENCES request.tblDiscrepancyTypes(idDiscrepancyType),
+	CONSTRAINT fkDiscrepancy_Request
+		FOREIGN KEY (idRequest) REFERENCES request.tblRequests(idRequest)
 );
 
 
 CREATE TABLE request.tblJustifications (
     idJustification INTEGER IDENTITY PRIMARY KEY,
-    idDiscrepancy INTEGER NOT NULL,
     title NVARCHAR(MAX),
     description NVARCHAR(MAX),
     impactLevel NVARCHAR(MAX),
     employeeComments NVARCHAR(MAX),
     submittedAt DATETIME DEFAULT GETDATE(),
-    reviewedAt DATETIME,
-    CONSTRAINT fkJustification_Discrepancy
-		FOREIGN KEY (idDiscrepancy) REFERENCES request.tblDiscrepancies(idDiscrepancy)
+    reviewedAt DATETIME
+);
+
+CREATE TABLE request.tblJustificationDiscrepancies(
+	idJustificationDiscrepancy INTEGER PRIMARY KEY IDENTITY,
+	idJustification INTEGER NOT NULL,
+	idDiscrepancy INTEGER NOT NULL,
+	CONSTRAINT fkJustificationDiscrepancy_Justification
+		FOREIGN KEY (idJustification) REFERENCES request.tblJustifications(idJustification),
+	CONSTRAINT fkJustificationDiscrepancy_Discrepancy
+		FOREIGN KEY (idDiscrepancy) REFERENCES request.tblDiscrepancies(idDiscrepancy),
+	CONSTRAINT ukJustification_Discrepancy
+		UNIQUE ( idDiscrepancy, idJustification)
 );
 
 CREATE TABLE request.tblScoreCalculations (
