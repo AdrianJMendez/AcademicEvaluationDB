@@ -40,27 +40,11 @@ CREATE TABLE academy.tblCareers (
 	totalPeriods INTEGER NOT NULL,
 	yearLength INTEGER NOT NULL,
     isActive BIT DEFAULT 1,	
-    --createdAt DATETIME DEFAULT GETDATE(),
-    --updatedAt DATETIME DEFAULT GETDATE(),
+	optativesQty INTEGER NOT NULL,
+	electivesQty INTEGER NOT NULL,
 	CONSTRAINT ukCareer_CareerCode
 		UNIQUE(careerCode)
 );
-
---CREATE TABLE academy.tblOfficialPlans (
---    idPlan INTEGER PRIMARY KEY IDENTITY,
---    idCareer INTEGER NOT NULL,
---    planVersion NVARCHAR(50) NOT NULL,
---    totalPeriods INT NOT NULL,
---    startDate DATE NOT NULL,
---    endDate DATE,
---    isActive BIT DEFAULT 1,
---    --createdAt DATETIME DEFAULT GETDATE(),
---    --updatedAt DATETIME DEFAULT GETDATE(),
---    CONSTRAINT fkPlan_Career
---		FOREIGN KEY (idCareer) REFERENCES academy.tblCareers(idCareer),
---	CONSTRAINT ukPlan_PlanVersion
---		UNIQUE (planVersion)
---);
 
 CREATE TABLE academy.tblSubjects (
     idSubject INTEGER PRIMARY KEY IDENTITY,
@@ -309,17 +293,37 @@ CREATE TABLE request.tblScoringParameters (
 		UNIQUE (parameterName)
 );
 
---CREATE TABLE request.tblRequestStatusHistory (
---    idRequestStatusHistory INTEGER IDENTITY PRIMARY KEY,
---    idRequest INTEGER NOT NULL,
---    previousStatus NVARCHAR(50),
---    newStatus NVARCHAR(50),
---    changedBy NVARCHAR(50),
---    changedAt DATETIME2 DEFAULT GETDATE(),
---    notes NVARCHAR(MAX),
---    CONSTRAINT fk_RequestStatusHistory_request
---		FOREIGN KEY (idRequest) REFERENCES request.tblRequests(idRequest)
---);
+CREATE TABLE request.tblRequestImages (
+	idRequestImage INTEGER IDENTITY PRIMARY KEY,
+	idRequest INTEGER NOT NULL,
+	imageName NVARCHAR(255) NOT NULL,
+	imageUrl NVARCHAR(MAX) NOT NULL,
+	thumbnailUrl NVARCHAR(MAX) NOT NULL,
+	CONSTRAINT fkRequestImage_Request
+		FOREIGN KEY (idRequest) REFERENCES request.tblRequests(idRequest)
+);
 
+CREATE TABLE request.tblRequestReports (
+	idRequestReport INTEGER IDENTITY PRIMARY KEY,
+	idRequest INTEGER NOT NULL,
+	fileName NVARCHAR(255) NOT NULL,
+	mimeType NVARCHAR(100) NOT NULL DEFAULT 'application/pdf',
+	reportData VARBINARY(MAX) NOT NULL,
+	generatedAt DATETIME DEFAULT GETDATE(),
+	CONSTRAINT fkRequestReport_Request
+		FOREIGN KEY (idRequest) REFERENCES request.tblRequests(idRequest),
+	CONSTRAINT ukRequestReport_Request
+		UNIQUE (idRequest)
+);
 
+CREATE TABLE request.tblRequestAcademicHistories(
+	idRequestAcademicHistory INTEGER PRIMARY KEY IDENTITY,
+	idRequest INTEGER NOT NULL,
+	jsonContent NVARCHAR(MAX) NOT NULL,
+	academicAverage DECIMAL(6,2) NOT NULL,
+	CONSTRAINT fkAcademicHistory_Request
+		FOREIGN KEY (idRequest) REFERENCES request.tblRequests(idRequest),
+	CONSTRAINT ukAcademicHistory_Request
+		UNIQUE(idRequest)
+);
 
