@@ -16,9 +16,9 @@ INSERT INTO users.tblRoles(roleName,isPublic)
 VALUES	('student',1),('employee',1),('admin',1);
 GO
 
-INSERT INTO academy.tblCareers(careerCode,careerName,facultyName,totalPeriods,yearLength)
-VALUES	('IS','Ingenieria en Sistemas','Ingenieria',15,5),
-		('AGE','Administracion de Empresas','Ciencias Economicas',20,6);
+INSERT INTO academy.tblCareers(careerCode,careerName,facultyName,totalPeriods,yearLength, optativesQty,electivesQty)
+VALUES	('IS','Ingenieria en Sistemas','Ingenieria',15,5,3,3),
+		('AGE','Administracion de Empresas','Ciencias Economicas',18,6,4,4);
 GO
 
 INSERT INTO request.tblDiscrepancyTypes(typeName)
@@ -103,17 +103,65 @@ VALUES
 								('IS115',	'Seminario de Investigación',	15	,		4,		4,	'?'),
 								-----CLASES ELECTIVAS GENERALES
 								--AREA DE DEPORTE  // ARTE
-								('RR189',	'Ajedrez',	1	,		3,		3,	'elective'),
-								('RR172',	'Baloncesto',	1	,		3,		3,	'elective'),
-								('RR171',	'Futbol',	1	,		3,		3,	'elective'),
-								('RR181',	'Primeros Auxilios',	1	,		3,		3,	'elective'),
+								('RR189',	'Ajedrez',	1	,		3,		3,	'Sports'),
+								('RR172',	'Baloncesto',	1	,		3,		3,	'Sports'),
+								('RR171',	'Futbol',	1	,		3,		3,	'Sports'),
+								('RR159',	'Arte de Mesoamerica',	1	,		3,		3,	'Sports'),
+								('RR162',	'Taller de Cine',	1	,		3,		3,	'Sports'),
+								('RR163',	'Taller de Musica en el Mundo',	1	,		3,		3,	'Sports'),
+								('RR164',	'Taller de Musca Latinoamericana',	1	,		3,		3,	'Sports'),
+								--('RR189',	'Taller de Actualizacion Teatral',	1	,		3,		3,	'Sports'),
+								--('RR172',	'Taller de Mascara y Titeres',	1	,		3,		3,	'Sports'),
+								--('RR171',	'Taller de Movimiento Creativo',	1	,		3,		3,	'Sports'),
+								('RR1746',	'Taller de Audicion Musical',	1	,		3,		3,	'Sports'),
+								--('RR192',	'Taller de Funda. de la Musica',	1	,		3,		3,	'Sports'),
+								--('RR180',	'Taller dde Guitarra Folklorica Latinoamericana',	1	,		3,		3,	'Sports'),
+								('RR176',	'Gimnasia General',	1	,		3,		3,	'Sports'),
+								('RR192',	'Juegos Organizados',	1	,		3,		3,	'Sports'),
+								('RR180',	'Karate',	1	,		3,		3,	'Sports'),
+								('RR191',	'Ping Pong',	1	,		3,		3,	'Sports'),
+								('RR173',	'Volibol',	1	,		3,		3,	'Sports'),
+								('RR179',	'Defensa Personal',	1	,		3,		3,	'Sports'),
+								('RR193',	'Futbol de Salon',	1	,		3,		3,	'Sports'),
+								('RR185',	'Judo',	1	,		3,		3,	'Sports'),
+								--('RR191',	'Montanismo',	1	,		3,		3,	'Sports'),
+								('RR174',	'Natacion',	1	,		3,		3,	'Sports'),
+								('RR196',	'Ecodeporte',	1	,		3,		3,	'Sports'),
+								('RR177',	'Atletismo',	1	,		3,		3,	'Sports'),
+								('RR181',	'Primeros Auxilios',	1	,		3,		3,	'Sports'),
 								--AREA DE HUMANIDADES
-								('EO021',	'Tecnicas de Lectura',	1	,		3,		3,	'elective'),
-								('EO025',	'Redaccion General',	1	,		3,		3,	'elective'),
-								('EO026',	'Literatura Hondureña',	1	,		3,		3,	'elective'),
+								('EO021',	'Tecnicas de Lectura',	1	,		3,		3,	'Humanities'),
+								('EO025',	'Redaccion General',	1	,		3,		3,	'Humanities'),
+								('EO026',	'Literatura Hondureña',	1	,		3,		3,	'Humanities'),
+								('AN101',	'Antropologia General',	1	,		3,		3,	'Humanities'),
+								('CP101',	'Ciencias Politicas',	1	,		3,		3,	'Humanities'),
+								('CP015',	'Derechos Humanos en Honduras',	1	,		3,		3,	'Humanities'),
+								('SC099',	'Estudios de la Mujer',	1	,		3,		3,	'Humanities'),
+								('CP110',	'La Democracia en Honduras',	1	,		3,		3,	'Humanities'),
+								('CP011',	'La Modernizacion del Estado',	1	,		3,		3,	'Humanities'),
+								('CP012',	'Pensamiento Politico Latinoamericano',	1	,		3,		3,	'Humanities'),
+								('CP013',	'Politica Social',	1	,		3,		3,	'Humanities'),
+								('CP106',	'El Sindicalismo en Honduras',	1	,		3,		3,	'Humanities'),
+								('EO027',	'Ortografia',	1	,		3,		3,	'Humanities'),
+								('EO022',	'Gramatica y Expresion',	1	,		3,		3,	'Humanities'),
+								('FF206',	'Etica Médica',	1	,		3,		3,	'Humanities'),
+								('FF201',	'Logica Matematica',	1	,		3,		3,	'Humanities'),
+								('PS101',	'Psicologia General',	1	,		3,		3,	'Humanities'),
+								('EN111',	'Educacion Seguridad Vial',	1	,		3,		3,	'Humanities'),
 								--AREA DE CIENCIAS NATURALES
-								('BI130',	'Educacion Ambiental',	1	,		3,		3,	'elective'),
-								('AN111',	'Introduccion a la Astronomia',	1	,		3,		3,	'elective')
+								('BI130',	'Educacion Ambiental',	1	,		3,		3,	'Natural'),
+								('AN111',	'Introduccion a la Astronomia',	1	,		3,		3,	'Natural'),
+								('FS011',	'Ciencias de la Tierra',	1	,		3,		3,	'Natural'),
+								('AQA111',	'Introduccion a la Arqueastronomía',	1	,		3,		3,	'Natural'),
+								('CTE111',	'Introduccion a la Percepcion Remota',	1	,		3,		3,	'Natural'),
+								('CTE112',	'Introduccion a los Sistemas de Informacion Geografica',	1	,		3,		3,	'Natural'),
+								('CTE113',	'Introduccion a los sistemas de Geoposicion Global',	1	,		3,		3,	'Natural'),
+								('AN112',	'Introduccion al Sistema Solar',	1	,		3,		3,	'Natural'),
+								('AN113',	'Astronomia y el Universo',	1	,		3,		3,	'Natural'),
+								('AQA112',	'Introduccion a la Arqueastronomia Maya',	1	,		3,		3,	'Natural'),
+								('DCA111',	'Introduccion a las Aeronaves',	1	,		3,		3,	'Natural'),
+								('FS102',	'Energia y Cambio Climatico',	1	,		3,		3,	'Natural'),
+								('QQ101',	'Quimica Ambiental',	1	,		3,		3,	'Natural');
 
 GO
 
@@ -134,7 +182,7 @@ UPDATE cs
 SET isElective = 1
 FROM academy.tblCareerSubjects AS cs
 INNER JOIN academy.tblSubjects AS s ON cs.idSubject = s.idSubject
-WHERE s.subjectType = 'elective';
+WHERE s.subjectType != '?';
 GO
 
 INSERT INTO academy.tblSubjectPrerequisites(idSubject,idPrerequisiteSubject)
@@ -420,7 +468,7 @@ VALUES	('estudiante@gmail.com','cea115f6db0fcae5bc6b1148d07249e446d0e295382fb562
 GO
 
 INSERT INTO users.tblStudents(idUser,accountNumber,enrollmentDate,currentPeriod)
-VALUES	(1,'20221004546',GETDATE(),2);
+VALUES	(1,'20221001010',GETDATE(),2);
 GO
 
 INSERT INTO users.tblStudentCareers(idStudent,idCareer)
